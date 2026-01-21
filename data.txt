@@ -1,0 +1,7 @@
+Company Leave Policy:
+Employees get 12 casual leaves per year.
+Work from home allowed twice per month.
+
+Project Guidelines:
+All code must be pushed to GitHub.
+Weekly review on Friday.
