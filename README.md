@@ -1,17 +1,25 @@
-# Project Name
+# 🤖 Diligent — Enterprise AI Assistant (Jarvis)
 
 ## Overview
-A brief description of your project goes here. Explain what the project does, its purpose, and main features.
+Diligent (Jarvis) is an enterprise-style conversational AI assistant built using LLaMA (self-hosted via Ollama), Pinecone Vector Database, and Chainlit UI.
+It uses Retrieval Augmented Generation (RAG) with conversation memory to answer user queries based on internal documents such as company policies, guidelines, or project notes.
+
+This project demonstrates how real-world GenAI systems are built for enterprise use cases and is designed for placement and interview demonstrations.
 
 ## Features
-- Feature 1: Description
-- Feature 2: Description
-- Feature 3: Description
-- Add more features as needed
+- 📚 Document-based Question Answering using RAG
+- 🧠 Conversation Memory (multi-turn contextual chat)
+- ☁️ Pinecone Cloud Vector Database for semantic search
+- 🦙 Self-hosted LLaMA 3 using Ollama
+- 💬 Real-time Chat UI using Chainlit
+- 🔐 Secure API key handling using .env file
+- ⚡ Fast semantic retrieval and accurate responses
 
 ## Requirements
-- Python 3.12 or higher
-- [List other dependencies here]
+- Python 3.10 or higher (recommended: 3.11)
+- Ollama installed (for local LLaMA model)
+- Pinecone account and API key
+- Stable internet connection (for Pinecone)
 
 ## Installation
 
@@ -40,76 +48,158 @@ source venv/bin/activate
 
 ### Step 4: Install Dependencies
 ```bash
-pip install -r requirements.txt
+pip install chainlit langchain pinecone-client python-dotenv ollama pypdf
+```
+
+### Step 5: Install Ollama and Model
+Download Ollama from: https://ollama.com/download
+
+```bash
+ollama pull llama3
+```
+
+## Configuration
+
+### Environment Variables
+Create a `.env` file in the project root directory:
+
+```bash
+PINECONE_API_KEY=your_api_key_here
+PINECONE_INDEX_NAME=jarvis
+```
+
+⚠️ Do not upload `.env` to GitHub.
+
+Add the following to `.gitignore`:
+
+```bash
+.env
+venv/
+__pycache__/
 ```
 
 ## Usage
 
-### Running the Application
-```bash
-python app.py
+### Step 1: Add Knowledge Base
+Edit `data.txt` and add your documents:
+
+```
+Leave Policy:
+Employees get 12 casual leaves per year.
+
+WFH Policy:
+Employees can work from home twice a month.
 ```
 
-### Running with Arguments
-```bash
-python app.py [arguments]
+### Step 2: Upload Data to Pinecone (First Time Only)
+In `app.py`, uncomment:
+
+```python
+upload_data()
 ```
 
-### Example
+Run once:
+
 ```bash
-python app.py --option value
+chainlit run app.py
 ```
+
+After data is uploaded, comment the line again to avoid duplicate vectors.
+
+### Step 3: Run the Application
+```bash
+chainlit run app.py
+```
+
+Open the browser and start chatting with Jarvis.
+
+### Example Queries
+- How many leaves are allowed?
+- Can I work from home?
+- Can I take both in the same month?
+
+Jarvis will respond using document knowledge and conversation context.
 
 ## Project Structure
 ```
 deligent/
-├── app.py              # Main application file
-├── requirements.txt    # Project dependencies
-├── .gitignore         # Git ignore file
-├── venv/              # Virtual environment (ignored by git)
-└── README.md          # This file
+├── app.py              # Main Chainlit + RAG application
+├── data.txt            # Knowledge base
+├── .env                # Environment variables (ignored)
+├── .gitignore
+├── requirements.txt    # Optional dependency list
+├── venv/               # Virtual environment (ignored)
+└── README.md
 ```
 
-## Dependencies
-[List your project dependencies here or reference requirements.txt]
+## System Architecture
+User → Chainlit UI → Retriever (Pinecone Vector DB) →  
+Relevant Chunks + Chat History → LLaMA (Ollama) → Final Answer
 
-## Configuration
-[Explain any configuration files or environment variables needed]
+This architecture minimizes hallucinations and ensures accurate responses based on documents.
 
-## API Documentation
-[If applicable, describe API endpoints or functions]
+## Use Cases
+- 🏢 Company HR policy assistant
+- 🎓 College administration chatbot
+- 📄 Project documentation assistant
+- 🤝 Internal team knowledge assistant
+
+## Future Enhancements
+- 📤 PDF upload from Chainlit UI
+- 🔐 User authentication
+- 🧠 Long-term memory with database storage
+- 🌐 FastAPI backend integration
+- 📊 Chat analytics and logging
 
 ## Contributing
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create your feature branch
+   ```bash
+   git checkout -b feature/NewFeature
+   ```
+3. Commit your changes
+   ```bash
+   git commit -m "Add NewFeature"
+   ```
+4. Push to the branch
+   ```bash
+   git push origin feature/NewFeature
+   ```
 5. Open a Pull Request
 
 ## Troubleshooting
 
 ### Common Issues
-- **Issue 1**: Solution
-- **Issue 2**: Solution
-
-### Getting Help
-[Provide contact information or support channels]
+- **Ollama not running**  
+  → Start Ollama and verify using:
+  ```bash
+  ollama list
+  ```
+- **Pinecone authentication error**  
+  → Check `.env` file and restart terminal.
+- **Bot not answering correctly**  
+  → Ensure documents were uploaded to Pinecone.
 
 ## License
-[Specify your project's license, e.g., MIT, Apache 2.0, etc.]
+This project is released under the MIT License.
 
 ## Author
-Created by Rohit
+Rohit Chigatapu  
+B.Tech CSE (AI/ML) | GenAI Developer | Computer Vision Enthusiast
 
 ## Acknowledgments
-- [Credit any libraries, resources, or individuals]
+- LangChain
+- Pinecone
+- Chainlit
+- Ollama (LLaMA Models)
 
 ## Changelog
 
 ### Version 1.0.0
-- Initial release
-- [List major features]
-
----
+- Chainlit UI chatbot
+- Pinecone vector database integration
+- RAG pipeline
+- Conversation memory
+- Secure API handling using .env
 
 **Last Updated**: January 21, 2026
